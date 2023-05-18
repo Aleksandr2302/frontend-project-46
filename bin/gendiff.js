@@ -29,8 +29,7 @@ program
       object2 = yaml.load(fs.readFileSync(filepath2, 'utf8'));
     }
     const compareFunction = (obj1, obj2) => {
-      const getAllKeysOfObj = Object.keys(obj1).concat(Object.keys(obj2));
-      const getUniqKeysOfObjSort = _.sortBy(_.uniq(getAllKeysOfObj));
+      const getUniqKeysOfObjSort = _.sortBy(_.uniq(Object.keys(obj1).concat(Object.keys(obj2))));
       let result = [];
       for (let i = 0; i < getUniqKeysOfObjSort.length; i += 1) {
         console.log(getUniqKeysOfObjSort[i]);
