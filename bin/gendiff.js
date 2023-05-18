@@ -31,29 +31,30 @@ program
     const compareFunction = (obj1, obj2) => {
       const getAllKeysOfObj = Object.keys(obj1).concat(Object.keys(obj2));
       const getUniqKeysOfObjSort = _.sortBy(_.uniq(getAllKeysOfObj));
-      // console.log(getUniqKeysOfObjSort);
       let result = [];
       for (let i = 0; i < getUniqKeysOfObjSort.length; i += 1) {
         console.log(getUniqKeysOfObjSort[i]);
         let str;
         const indent = ' '; // одиночный отступ
         const doubleIndent = indent + indent; // двойной отступ
+        const isKeyInObj1 = getUniqKeysOfObjSort[i] in obj1;
+        const isKeyInObj2 = getUniqKeysOfObjSort[i] in obj2;
         // есть в 1 нет во 2
-        if ((getUniqKeysOfObjSort[i] in obj1) && !(getUniqKeysOfObjSort[i] in obj2)) {
+        if ((isKeyInObj1) && !(isKeyInObj2)) {
           str = `${indent}- ${getUniqKeysOfObjSort[i]}: ${obj1[getUniqKeysOfObjSort[i]]}`;
           result.push(str);
         // есть в обоих и значения равны
-        } else if ((getUniqKeysOfObjSort[i] in obj1) && (getUniqKeysOfObjSort[i] in obj2)
+        } else if ((isKeyInObj1) && (isKeyInObj2)
         && obj1[getUniqKeysOfObjSort[i]] === obj2[getUniqKeysOfObjSort[i]]) {
           str = `${doubleIndent + indent}${getUniqKeysOfObjSort[i]}: ${obj2[getUniqKeysOfObjSort[i]]}`;
           result.push(str);
         // есть в обоих и значения разные
-        } else if ((getUniqKeysOfObjSort[i] in obj1) && (getUniqKeysOfObjSort[i] in obj2)
+        } else if ((isKeyInObj1) && (isKeyInObj2)
         && obj1[getUniqKeysOfObjSort[i]] != obj2[getUniqKeysOfObjSort[i]]) {
           str = `${indent}- ${getUniqKeysOfObjSort[i]}: ${obj1[getUniqKeysOfObjSort[i]]}\n${indent}+ ${getUniqKeysOfObjSort[i]}: ${obj2[getUniqKeysOfObjSort[i]]}`;
           result.push(str);
         // есть во 2 и нет в 1
-        } else if (!(getUniqKeysOfObjSort[i] in obj1) && (getUniqKeysOfObjSort[i] in obj2)) {
+        } else if (!(isKeyInObj1) && !(isKeyInObj2)) {
           str = `${indent}+ ${getUniqKeysOfObjSort[i]}: ${obj2[getUniqKeysOfObjSort[i]]}`;
           result.push(str);
         }
