@@ -33,7 +33,7 @@ program
       const getUniqKeysOfObjSort = _.sortBy(_.uniq(getAllKeysOfObj));
       // console.log(getUniqKeysOfObjSort);
       let result = [];
-      for (let i = 0; i < getUniqKeysOfObjSort.length; i++) {
+      for (let i = 0; i < getUniqKeysOfObjSort.length; i += 1) {
         console.log(getUniqKeysOfObjSort[i]);
         let str;
         const indent = ' '; // одиночный отступ
