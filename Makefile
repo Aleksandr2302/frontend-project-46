@@ -3,5 +3,5 @@ gendiff:
 lint:
 	npx eslint .
 tests:	
-	npx jest
+	npx jest --coverage
 	
