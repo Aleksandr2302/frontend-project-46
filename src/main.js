@@ -18,21 +18,29 @@ const getUniqKeysFromObj = (obj1, obj2) => {
 // Функция проверки ключей в 2-х объектах
 const getKeyDiffString = (key, obj1, obj2) => {
   let str;
-  // есть в 1, нет во 2
-  if (hasKey(obj1, key) && !hasKey(obj2, key)) {
-    str = `  - ${key}: ${obj1[key]}`;
-  // есть в обоих и значения равны
-  } if (hasKey(obj1, key) && hasKey(obj2, key) && obj1[key] === obj2[key]) {
-    str = `    ${key}: ${obj2[key]}`;
-  // есть в обоих и значения не равны
-  } if (hasKey(obj1, key) && hasKey(obj2, key) && obj1[key] != obj2[key]) {
-    str = `  - ${key}: ${obj1[key]}\n  + ${key}: ${obj2[key]}`;
-  // есть во 2, нет в 1
-  } if (!hasKey(obj1, key) && hasKey(obj2, key)) {
-    str = `  + ${key}: ${obj2[key]}`;
+  switch (true) {
+    // есть в 1, нет во 2
+    case hasKey(obj1, key) && !hasKey(obj2, key):
+      str = `  - ${key}: ${obj1[key]}`;
+      break;
+    // есть в обоих и значения равны
+    case hasKey(obj1, key) && hasKey(obj2, key) && obj1[key] === obj2[key]:
+      str = `    ${key}: ${obj2[key]}`;
+      break;
+    // есть в обоих и значения не равны
+    case hasKey(obj1, key) && hasKey(obj2, key) && obj1[key] != obj2[key]:
+      str = `  - ${key}: ${obj1[key]}\n  + ${key}: ${obj2[key]}`;
+      break;
+    // есть во 2, нет в 1
+    case !hasKey(obj1, key) && hasKey(obj2, key):
+      str = `  + ${key}: ${obj2[key]}`;
+      break;
+    default:
+      break;
   }
   return str;
 };
+
 // Функция обхода и сравнения ключей в объектах
 const checkEachKeyInObj = (obj1, obj2, keys) => {
   const result = keys.map((key) => getKeyDiffString(key, obj1, obj2));
