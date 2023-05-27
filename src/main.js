@@ -7,28 +7,28 @@ import yaml from 'js-yaml';
 const compareFunction = (obj1, obj2) => {
   const getAllKeysOfObj = Object.keys(obj1).concat(Object.keys(obj2));
   const getUniqKeysOfObjSort = _.sortBy(_.uniq(getAllKeysOfObj));
-  let result = '{\n';
+  let str;
+  let result = [];
   for (let i = 0; i < getUniqKeysOfObjSort.length; i += 1) {
     const key = getUniqKeysOfObjSort[i];
     const isKeyInObj1 = key in obj1;
     const isKeyInObj2 = key in obj2;
     // есть в 1 нет во 2
     if (isKeyInObj1 && !isKeyInObj2) {
-      result += `  - ${key}: ${obj1[key]}\n`;
+      str = `  - ${key}: ${obj1[key]}`;
     // есть в обоих и значения равны
     } else if (isKeyInObj1 && isKeyInObj2 && obj1[key] === obj2[key]) {
-      result += `    ${key}: ${obj2[key]}\n`;
+      str = `    ${key}: ${obj2[key]}`;
     // есть в обоих и значения не равны
     } else if (isKeyInObj1 && isKeyInObj2 && obj1[key] !== obj2[key]) {
-      result += `  - ${key}: ${obj1[key]}\n`;
-      result += `  + ${key}: ${obj2[key]}\n`;
+      str = `  - ${key}: ${obj1[key]}\n  + ${key}: ${obj2[key]}`;
     // есть во 2 и нет в 1
     } else if (!isKeyInObj1 && isKeyInObj2) {
-      result += `  + ${key}: ${obj2[key]}\n`;
+      str = `  + ${key}: ${obj2[key]}`;
     }
+    result.push(str);
   }
-  result += '}';
-  // console.log(result);
+  result = `{\n${result.join('\n')}\n}`;
   return result;
 };
 
