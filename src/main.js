@@ -6,30 +6,26 @@ import yaml from 'js-yaml';
 
 const compareFunction = (obj1, obj2) => {
   const getAllKeysOfObj = Object.keys(obj1).concat(Object.keys(obj2));
-  const getUniqKeysOfObjSort = _.sortBy(_.uniq(getAllKeysOfObj));
-  let str;
-  let result = [];
-  for (let i = 0; i < getUniqKeysOfObjSort.length; i += 1) {
-    const key = getUniqKeysOfObjSort[i];
+  const keys = _.sortBy(_.uniq(getAllKeysOfObj));
+  const result = keys.map((key) => {
     const isKeyInObj1 = key in obj1;
     const isKeyInObj2 = key in obj2;
     // есть в 1 нет во 2
     if (isKeyInObj1 && !isKeyInObj2) {
-      str = `  - ${key}: ${obj1[key]}`;
+      return `  - ${key}: ${obj1[key]}`;
     // есть в обоих и значения равны
-    } else if (isKeyInObj1 && isKeyInObj2 && obj1[key] === obj2[key]) {
-      str = `    ${key}: ${obj2[key]}`;
+    } if (isKeyInObj1 && isKeyInObj2 && obj1[key] === obj2[key]) {
+      return `    ${key}: ${obj2[key]}`;
     // есть в обоих и значения не равны
-    } else if (isKeyInObj1 && isKeyInObj2 && obj1[key] !== obj2[key]) {
-      str = `  - ${key}: ${obj1[key]}\n  + ${key}: ${obj2[key]}`;
+    } if (isKeyInObj1 && isKeyInObj2 && obj1[key] !== obj2[key]) {
+      return `  - ${key}: ${obj1[key]}\n  + ${key}: ${obj2[key]}`;
     // есть во 2 и нет в 1
-    } else if (!isKeyInObj1 && isKeyInObj2) {
-      str = `  + ${key}: ${obj2[key]}`;
+    } if (!isKeyInObj1 && isKeyInObj2) {
+      return `  + ${key}: ${obj2[key]}`;
     }
-    result.push(str);
-  }
-  result = `{\n${result.join('\n')}\n}`;
-  return result;
+    return '';
+  });
+  return `{\n${result.join('\n')}\n}`;
 };
 
 const gendiffFunction = ((filepath1, filepath2) => {
