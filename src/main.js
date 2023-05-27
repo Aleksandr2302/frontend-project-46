@@ -18,28 +18,33 @@ const getUniqKeysFromObj = (obj1, obj2) => {
 // Функция обхода и сравнения ключей в объекте
 const checkEachKeyInObj = (obj1, obj2, keys) => {
   const result = keys.map((key) => {
-    let str;
     const isKeyInObj1 = hasKey(obj1, key);
     const isKeyInObj2 = hasKey(obj2, key);
-    // есть в 1, нет во 2
-    if (isKeyInObj1 && !isKeyInObj2) {
-      str = `  - ${key}: ${obj1[key]}`;
-    // есть в обоих и значения равны
-    } else if (isKeyInObj1 && isKeyInObj2 && obj1[key] === obj2[key]) {
-      str = `    ${key}: ${obj2[key]}`;
-    // есть в обоих и значения не равны
-    } else if (isKeyInObj1 && isKeyInObj2 && obj1[key] !== obj2[key]) {
-      str = `  - ${key}: ${obj1[key]}\n  + ${key}: ${obj2[key]}`;
-    // есть во 2, нет в 1
-    } else if (!isKeyInObj1 && isKeyInObj2) {
-      str = `  + ${key}: ${obj2[key]}`;
-    }
-    return str;
+    return (
+      (isKeyInObj1 && !isKeyInObj2 && `  - ${key}: ${obj1[key]}`)
+      || (isKeyInObj1 && isKeyInObj2 && obj1[key] === obj2[key] && `    ${key}: ${obj2[key]}`)
+        || (isKeyInObj1 && isKeyInObj2 && `  - ${key}: ${obj1[key]}\n  + ${key}: ${obj2[key]}`)
+          || (isKeyInObj2 && `  + ${key}: ${obj2[key]}`)
+            || ''
+    );
   });
   return result;
 };
+// // есть в 1, нет во 2
+// if (isKeyInObj1 && !isKeyInObj2) {
+//   str = `  - ${key}: ${obj1[key]}`;
+// // есть в обоих и значения равны
+// } else if (isKeyInObj1 && isKeyInObj2 && obj1[key] === obj2[key]) {
+//   str = `    ${key}: ${obj2[key]}`;
+// // есть в обоих и значения не равны
+// } else if (isKeyInObj1 && isKeyInObj2 && obj1[key] !== obj2[key]) {
+//   str = `  - ${key}: ${obj1[key]}\n  + ${key}: ${obj2[key]}`;
+// // есть во 2, нет в 1
+// } else if (!isKeyInObj1 && isKeyInObj2) {
+//   str = `  + ${key}: ${obj2[key]}`;
+// }
 
-// Функция сравнения двух объектов 
+// Функция сравнения двух объектов
 const compareFunction = (obj1, obj2) => {
   const keys = getUniqKeysFromObj(obj1, obj2);
   const result = checkEachKeyInObj(obj1, obj2, keys);
