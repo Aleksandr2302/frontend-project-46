@@ -7,7 +7,7 @@ import yaml from 'js-yaml';
 // Функция для проверки сущ. ключа в объекте
 const hasKey = (obj, key) => key in obj;
 
-// Функция вывода уникальных ключей из объектов
+// Функция вывода уникальных ключей из 2-х объектов
 const getUniqKeysFromObj = (obj1, obj2) => {
   const keys = Object.keys(obj1).concat(Object.keys(obj2));
   const uniqKeys = _.uniq(keys);
@@ -15,19 +15,26 @@ const getUniqKeysFromObj = (obj1, obj2) => {
   return sortedKeys;
 };
 
-// Функция обхода и сравнения ключей в объекте
+// Функция проверки ключей в 2-х объектах
+const getKeyDiffString = (key, obj1, obj2) => {
+  // есть в 1, нет во 2
+  if (hasKey(obj1, key) && !hasKey(obj2, key)) {
+    return `  - ${key}: ${obj1[key]}`;
+  // есть в обоих и значения равны
+  } if (hasKey(obj1, key) && hasKey(obj2, key) && obj1[key] === obj2[key]) {
+    return `    ${key}: ${obj2[key]}`;
+  // есть в обоих и значения не равны
+  } if (hasKey(obj1, key) && hasKey(obj2, key)) {
+    return `  - ${key}: ${obj1[key]}\n  + ${key}: ${obj2[key]}`;
+  // есть во 2, нет в 1
+  } if (!hasKey(obj1, key) && hasKey(obj2, key)) {
+    return `  + ${key}: ${obj2[key]}`;
+  }
+  return '';
+};
+// Функция обхода и сравнения ключей в объектах
 const checkEachKeyInObj = (obj1, obj2, keys) => {
-  const result = keys.map((key) => {
-    const isKeyInObj1 = hasKey(obj1, key);
-    const isKeyInObj2 = hasKey(obj2, key);
-    return (
-      (isKeyInObj1 && !isKeyInObj2 && `  - ${key}: ${obj1[key]}`)
-      || (isKeyInObj1 && isKeyInObj2 && obj1[key] === obj2[key] && `    ${key}: ${obj2[key]}`)
-        || (isKeyInObj1 && isKeyInObj2 && `  - ${key}: ${obj1[key]}\n  + ${key}: ${obj2[key]}`)
-          || (isKeyInObj2 && `  + ${key}: ${obj2[key]}`)
-            || ''
-    );
-  });
+  const result = keys.map((key) => getKeyDiffString(key, obj1, obj2));
   return result;
 };
 // // есть в 1, нет во 2
@@ -51,6 +58,7 @@ const compareFunction = (obj1, obj2) => {
   return `{\n${result.join('\n')}\n}`;
 };
 
+// Основная функция
 const gendiffFunction = ((filepath1, filepath2) => {
   let object1;
   let object2;
