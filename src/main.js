@@ -9,8 +9,8 @@ const compareFunction = (obj1, obj2) => {
   let result = '{\n';
   for (let i = 0; i < getUniqKeysOfObjSort.length; i += 1) {
     const key = getUniqKeysOfObjSort[i];
-    const isKeyInObj1 = Object.prototype.hasOwnProperty.call(obj1, key);
-    const isKeyInObj2 = Object.prototype.hasOwnProperty.call(obj2, key);
+    const isKeyInObj1 = key in obj1;
+    const isKeyInObj2 = key in obj2;
     // есть в 1 нет во 2
     if (isKeyInObj1 && !isKeyInObj2) {
       result += `  - ${key}: ${obj1[key]}\n`;
