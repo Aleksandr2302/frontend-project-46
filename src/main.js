@@ -5,7 +5,8 @@ import yaml from 'js-yaml';
 // const fs = require('fs');
 
 const compareFunction = (obj1, obj2) => {
-  const getUniqKeysOfObjSort = _.sortBy(_.uniq(Object.keys(obj1).concat(Object.keys(obj2))));
+  const getAllKeysOfObj = Object.keys(obj1).concat(Object.keys(obj2));
+  const getUniqKeysOfObjSort = _.sortBy(_.uniq(getAllKeysOfObj));
   let result = '{\n';
   for (let i = 0; i < getUniqKeysOfObjSort.length; i += 1) {
     const key = getUniqKeysOfObjSort[i];
