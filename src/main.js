@@ -8,22 +8,23 @@ const compareFunction = (obj1, obj2) => {
   const getAllKeysOfObj = Object.keys(obj1).concat(Object.keys(obj2));
   const keys = _.sortBy(_.uniq(getAllKeysOfObj));
   const result = keys.map((key) => {
+    let str;
     const isKeyInObj1 = key in obj1;
     const isKeyInObj2 = key in obj2;
     // есть в 1 нет во 2
     if (isKeyInObj1 && !isKeyInObj2) {
-      return `  - ${key}: ${obj1[key]}`;
+      str = `  - ${key}: ${obj1[key]}`;
     // есть в обоих и значения равны
-    } if (isKeyInObj1 && isKeyInObj2 && obj1[key] === obj2[key]) {
-      return `    ${key}: ${obj2[key]}`;
+    } else if (isKeyInObj1 && isKeyInObj2 && obj1[key] === obj2[key]) {
+      str = `    ${key}: ${obj2[key]}`;
     // есть в обоих и значения не равны
-    } if (isKeyInObj1 && isKeyInObj2 && obj1[key] !== obj2[key]) {
-      return `  - ${key}: ${obj1[key]}\n  + ${key}: ${obj2[key]}`;
+    } else if (isKeyInObj1 && isKeyInObj2 && obj1[key] !== obj2[key]) {
+      str = `  - ${key}: ${obj1[key]}\n  + ${key}: ${obj2[key]}`;
     // есть во 2 и нет в 1
-    } if (!isKeyInObj1 && isKeyInObj2) {
-      return `  + ${key}: ${obj2[key]}`;
+    } else if (!isKeyInObj1 && isKeyInObj2) {
+      str = `  + ${key}: ${obj2[key]}`;
     }
-    return '';
+    return str;
   });
   return `{\n${result.join('\n')}\n}`;
 };
