@@ -13,3 +13,7 @@
 
 #### An example of using our program to compare flat files
 https://asciinema.org/a/31G2X3UTXpcVRn7oDjAmlWYn7
+
+
+#### An example of using our program to compare nested files in stylish format
+https://asciinema.org/a/4PYcd2mlb6n2NVnP6nEt6qyU7
