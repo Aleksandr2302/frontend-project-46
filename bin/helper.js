@@ -29,21 +29,33 @@ const createInitTree = (name, type, status = '', children = [], value = '') => (
 const equalKeyInTwoObj = (node, value1, value2) => {
   node.type = 'nested';
   node.status = 'unchanged';
-  node.children = buildNestedNode(value1, value2);
+  node.children = buildTree(value1, value2);
 };
 
 // Функция, когда ключ есть только в 1 объекте
 const handelKeyOnlyInObj1 = (node, value1, isUnchanged) => {
+  node.status = isUnchanged ? 'unchanged' : 'deleted';
   // Значение ключа - лист в 1 объекте
   if (!_.isObject(value1)) {
-    node.status = isUnchanged ? 'unchanged' : 'deleted';
     node.type = 'leaf';
     node.value = { oldValue: value1 };
   // Значение ключа объект в 1 объекте
   } else {
-    node.status = isUnchanged ? 'unchanged' : 'deleted';
     node.type = 'nested';
-    node.children = buildNestedNode(value1, {}, true);
+    node.children = buildTree(value1, {}, true);
+  }
+};
+
+// Функция, когда ключ есть только во 2 объекте
+const handelKeyOnlyInObj2 = (node, value2, isUnchanged) => {
+  node.status = isUnchanged ? 'unchanged' : 'added';
+  if (!_.isObject(value2)) {
+    node.type = 'leaf';
+    node.value = { newValue: value2 };
+    // Значение ключа объект 2 объекте
+  } else {
+    node.type = 'nested';
+    node.children = buildTree({}, value2, true);
   }
 };
 
@@ -52,21 +64,6 @@ const equalKeyAndValueInTwoObj = (node, value1) => {
   node.type = 'leaf';
   node.status = 'unchanged';
   node.value = value1;
-};
-
-// Функция, когда ключ есть только во 2 объекте
-const handelKeyOnlyInObj2 = (node, value2, isUnchanged) => {
-  if (!_.isObject(value2)) {
-    node.status = isUnchanged ? 'unchanged' : 'added';
-    node.type = 'leaf';
-    node.value = { newValue: value2 };
-    // Значение ключа объект 2 объекте
-  } else {
-    node.status = isUnchanged ? 'unchanged' : 'added';
-    node.type = 'nested';
-    node.value = value2;
-    node.children = buildNestedNode({}, value2, true);
-  }
 };
 
 // Функция для дефолтного сценария
@@ -94,10 +91,12 @@ const checkDiffConditionFunc = (obj1, obj2, node, key, isUnchanged) => {
       break;
     // Ключ есть только в 1 объекте
     case (hasKey(obj1, key) && !hasKey(obj2, key)):
+      // handelKeyOnlyInObj(node, value1, isUnchanged);
       handelKeyOnlyInObj1(node, value1, isUnchanged);
       break;
     // Ключ есть только во 2 объекте
     case (!hasKey(obj1, key) && hasKey(obj2, key)):
+      // handelKeyOnlyInObj(node, value2, isUnchanged);
       handelKeyOnlyInObj2(node, value2, isUnchanged);
       break;
     // Ключ есть в обоих объектах и значения не равны
@@ -113,80 +112,100 @@ const checkDiffConditionFunc = (obj1, obj2, node, key, isUnchanged) => {
   return node;
 };
 
-// Функция обработки вложенных узлов
-const buildNestedNode = (obj1, obj2, isUnchanged = false) => {
+// Функция построения дерева
+const buildTree = (obj1, obj2, isUnchanged = false) => {
   const sortedKeys = getUniqKeysFromObj(obj1, obj2);
-  const nestedNode = sortedKeys.map((key) => {
+  const packTree = sortedKeys.map((key) => {
     const node = createInitTree(key);
     checkDiffConditionFunc(obj1, obj2, node, key, isUnchanged);
     return node;
   });
-  return nestedNode;
+  return packTree;
 };
 
+// // Функция обработки вложенных узлов
+// const buildNestedNode = (obj1, obj2, isUnchanged = false) => {
+//   const sortedKeys = getUniqKeysFromObj(obj1, obj2);
+//   const nestedNode = sortedKeys.map((key) => {
+//     const node = createInitTree(key);
+//     checkDiffConditionFunc(obj1, obj2, node, key, isUnchanged);
+//     return node;
+//   });
+//   return nestedNode;
+// };
+
 // //////////// Дополнительные функции для работы файла stylish.js////////////////////////
+
 const getValueString = (value, depth, spaceCount = 4) => {
   if (_.isObject(value)) {
-    if (value.oldValue !== undefined) {
-      return value.oldValue !== null ? value.oldValue.toString() : 'null';
-    } if (value.newValue !== undefined) {
-      return value.newValue !== null ? value.newValue.toString() : 'null';
+    switch (true) {
+      case value.oldValue !== undefined:
+        return value.oldValue !== null ? value.oldValue.toString() : 'null';
+
+      case value.newValue !== undefined:
+        return value.newValue !== null ? value.newValue.toString() : 'null';
+
+      default:
     }
     const indent = ' '.repeat(depth * spaceCount);
     const closeBracketsIndent = ' '.repeat((depth - 1) * spaceCount);
     const lines = Object.entries(value).map(([key, val]) => `${indent}${key}: ${getValueString(val, depth)}`);
     return `{\n${lines.join('\n')}\n${closeBracketsIndent}}`;
   }
-  if (value === undefined) {
-    return 'undefined';
-  }
   return value !== null ? value.toString() : 'null';
+};
+
+// Функция добавления строки в массив в зависимости от статуса
+
+const processStatus = (node, indent, result, depth, valueKey, value) => {
+  result.push(`${indent}${valueKey} ${node.name}: ${getValueString(value, depth + 1)}`);
 };
 
 // Функция обработки листового узла
 const processLeafNode = (node, indent, result, depth) => {
   switch (true) {
     case node.status === 'added':
-      result.push(`${indent}+ ${node.name}: ${getValueString(node.value.newValue, depth + 1)}`);
+      processStatus(node, indent, result, depth, '+', node.value.newValue);
       break;
 
     case node.status === 'deleted':
-      result.push(`${indent}- ${node.name}: ${getValueString(node.value.oldValue, depth + 1)}`);
+      processStatus(node, indent, result, depth, '-', node.value.oldValue);
       break;
 
     case node.status === 'modified':
-      result.push(`${indent}- ${node.name}: ${getValueString(node.value.oldValue, depth + 1)}`);
-      result.push(`${indent}+ ${node.name}: ${getValueString(node.value.newValue, depth + 1)}`);
+      processStatus(node, indent, result, depth, '-', node.value.oldValue);
+      processStatus(node, indent, result, depth, '+', node.value.newValue);
       break;
 
     case node.status === 'unchanged':
-      result.push(`${indent}  ${node.name}: ${getValueString(node.value, depth + 1)}`);
+      processStatus(node, indent, result, depth, ' ', node.value);
       break;
 
     default:
-      result.push(`${indent}  ${node.name}: Unknown status`);
+      processStatus(node, indent, result, depth, ' ', node.value = 'Unknown status');
       break;
   }
 };
 
 // Функция обработки вложенного узла
 const processNestedNode = (node, indent, result, depth, spaceCount = 4, replacer = '') => {
-  if (node.type === 'leaf') {
-    processLeafNode(node, indent, result, depth);
-  } else if (node.type === 'nested') {
-    if (node.status === 'added' || node.status === 'deleted') {
-      result.push(`${indent}${node.status === 'added' ? '+' : '-'} ${node.name}: {`);
-      node.children.forEach((child) => {
-        processNestedNode(child, indent + ' '.repeat(spaceCount), result, depth + 1, spaceCount, replacer);
-      });
-      result.push(`${indent}${replacer.repeat(spaceCount - 2)}  }`);
-    } else {
-      result.push(`${indent}  ${node.name}: {`);
+  switch (true) {
+    case node.type === 'leaf':
+      processLeafNode(node, indent, result, depth);
+      break;
+
+    case node.type === 'nested':
+      if (node.status === 'added' || node.status === 'deleted') {
+        result.push(`${indent}${node.status === 'added' ? '+' : '-'} ${node.name}: {`);
+      } else {
+        result.push(`${indent}  ${node.name}: {`);
+      }
       node.children.forEach((child) => {
         processNestedNode(child, indent + ' '.repeat(spaceCount), result, depth + 1, spaceCount, replacer);
       });
       result.push(`${indent}  ${replacer.repeat(spaceCount)}}`);
-    }
+      break;
+    default:
   }
 };
 
@@ -195,13 +214,15 @@ export {
   getUniqKeysFromObj,
   createInitTree,
   equalKeyInTwoObj,
-  handelKeyOnlyInObj1,
+  // handelKeyOnlyInObj,
   equalKeyAndValueInTwoObj,
+  handelKeyOnlyInObj1,
   handelKeyOnlyInObj2,
   defaultCaseFunction,
   checkDiffConditionFunc,
-  buildNestedNode,
+  // buildNestedNode,
   getValueString,
   processLeafNode,
-  processNestedNode
+  processNestedNode,
+  buildTree
 };
