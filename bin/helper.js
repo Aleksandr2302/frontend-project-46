@@ -118,24 +118,20 @@ const buildTree = (obj1, obj2, isUnchanged = false) => {
   const packTree = sortedKeys.map((key) => {
     const node = createInitTree(key);
     checkDiffConditionFunc(obj1, obj2, node, key, isUnchanged);
+    // console.log(JSON.stringify(node, null, '  '));
     return node;
   });
   return packTree;
 };
 
-// // Функция обработки вложенных узлов
-// const buildNestedNode = (obj1, obj2, isUnchanged = false) => {
-//   const sortedKeys = getUniqKeysFromObj(obj1, obj2);
-//   const nestedNode = sortedKeys.map((key) => {
-//     const node = createInitTree(key);
-//     checkDiffConditionFunc(obj1, obj2, node, key, isUnchanged);
-//     return node;
-//   });
-//   return nestedNode;
-// };
-
 // //////////// Дополнительные функции для работы файла stylish.js////////////////////////
 
+// Функция добавления строки в массив в зависимости от статуса
+const processStatus = (node, indent, result, depth, valueKey, value) => {
+  result.push(`${indent}${valueKey} ${node.name}: ${getValueString(value, depth + 1)}`);
+};
+
+// Функция обработка значений
 const getValueString = (value, depth, spaceCount = 4) => {
   if (_.isObject(value)) {
     switch (true) {
@@ -155,21 +151,17 @@ const getValueString = (value, depth, spaceCount = 4) => {
   return value !== null ? value.toString() : 'null';
 };
 
-// Функция добавления строки в массив в зависимости от статуса
-
-const processStatus = (node, indent, result, depth, valueKey, value) => {
-  result.push(`${indent}${valueKey} ${node.name}: ${getValueString(value, depth + 1)}`);
-};
-
 // Функция обработки листового узла
 const processLeafNode = (node, indent, result, depth) => {
   switch (true) {
     case node.status === 'added':
       processStatus(node, indent, result, depth, '+', node.value.newValue);
+      // console.log(`node.value.newValue ${node.value.newValue}`)
       break;
 
     case node.status === 'deleted':
       processStatus(node, indent, result, depth, '-', node.value.oldValue);
+      // console.log(`node.value.oldValue ${node.value.oldValue}`)
       break;
 
     case node.status === 'modified':
@@ -179,6 +171,7 @@ const processLeafNode = (node, indent, result, depth) => {
 
     case node.status === 'unchanged':
       processStatus(node, indent, result, depth, ' ', node.value);
+      // console.log(`node.value ${node.value}`)
       break;
 
     default:
@@ -189,23 +182,18 @@ const processLeafNode = (node, indent, result, depth) => {
 
 // Функция обработки вложенного узла
 const processNestedNode = (node, indent, result, depth, spaceCount = 4, replacer = '') => {
-  switch (true) {
-    case node.type === 'leaf':
-      processLeafNode(node, indent, result, depth);
-      break;
+  if (node.type === 'leaf') {
+    processLeafNode(node, indent, result, depth);
+  } else if (node.type === 'nested') {
+    const openingBracket = node.status === 'added' || node.status === 'deleted' ? `${indent}${node.status === 'added' ? '+' : '-'} ${node.name}: {` : `${indent}  ${node.name}: {`;
+    result.push(openingBracket);
 
-    case node.type === 'nested':
-      if (node.status === 'added' || node.status === 'deleted') {
-        result.push(`${indent}${node.status === 'added' ? '+' : '-'} ${node.name}: {`);
-      } else {
-        result.push(`${indent}  ${node.name}: {`);
-      }
-      node.children.forEach((child) => {
-        processNestedNode(child, indent + ' '.repeat(spaceCount), result, depth + 1, spaceCount, replacer);
-      });
-      result.push(`${indent}  ${replacer.repeat(spaceCount)}}`);
-      break;
-    default:
+    node.children.forEach((child) => {
+      processNestedNode(child, indent + ' '.repeat(spaceCount), result, depth + 1, spaceCount, replacer);
+    });
+
+    const closingBracket = `${indent}  ${replacer.repeat(spaceCount)}}`;
+    result.push(closingBracket);
   }
 };
 
