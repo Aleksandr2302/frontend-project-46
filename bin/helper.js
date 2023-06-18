@@ -184,17 +184,15 @@ const processLeafNode = (node, indent, result, depth) => {
 const processNestedNode = (node, indent, result, depth, spaceCount = 4, replacer = '') => {
   if (node.type === 'leaf') {
     processLeafNode(node, indent, result, depth);
-  } else if (node.type === 'nested') {
-    const openingBracket = node.status === 'added' || node.status === 'deleted' ? `${indent}${node.status === 'added' ? '+' : '-'} ${node.name}: {` : `${indent}  ${node.name}: {`;
-    result.push(openingBracket);
-
-    node.children.forEach((child) => {
-      processNestedNode(child, indent + ' '.repeat(spaceCount), result, depth + 1, spaceCount, replacer);
-    });
-
-    const closingBracket = `${indent}  ${replacer.repeat(spaceCount)}}`;
-    result.push(closingBracket);
+    return;
   }
+  const openingBracket = node.status === 'added' || node.status === 'deleted' ? `${indent}${node.status === 'added' ? '+' : '-'} ${node.name}: {` : `${indent}  ${node.name}: {`;
+  result.push(openingBracket);
+  node.children.forEach((child) => {
+    processNestedNode(child, indent + ' '.repeat(spaceCount), result, depth + 1, spaceCount, replacer);
+  });
+
+  result.push(`${indent}  ${replacer.repeat(spaceCount)}}`);
 };
 
 export {
