@@ -1,7 +1,10 @@
 #!/usr/bin/env node
 import { program } from 'commander';
-import formatDiffStylishDefault from './stylish.js';
+import formatDiffStylishDefault from '../formatters/stylish.js';
+import formatDiffPlain from '../formatters/plain.js';
+import { selectFormat } from '../formatters/index.js';
 import { gendiffFunction } from '../src/main.js';
+
 
 program
   .name('gendiff')
@@ -13,12 +16,13 @@ program
     const options = program.opts();
     const format = options.format ? options.format : 'stylish';
     let result = '';
-    const resultOfGendiffFunc = gendiffFunction(filepath1, filepath2);
-    if (format === 'stylish') {
-      result = formatDiffStylishDefault(resultOfGendiffFunc);
-    } else if (format === 'plain') {
-      result = 'plain!!!';
-    }
+    result = selectFormat (format, filepath1, filepath2 );
+    // const resultOfGendiffFunc = gendiffFunction(filepath1, filepath2);
+    // if (format === 'stylish') {
+    //   result = formatDiffStylishDefault(resultOfGendiffFunc);
+    // } else if (format === 'plain') {
+    //   result = formatDiffPlain(resultOfGendiffFunc)
+    // }
     console.log(result);
   });
 program.parse();

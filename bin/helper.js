@@ -116,11 +116,14 @@ const checkDiffConditionFunc = (obj1, obj2, node, key, isUnchanged) => {
 const buildTree = (obj1, obj2, isUnchanged = false) => {
   const sortedKeys = getUniqKeysFromObj(obj1, obj2);
   const packTree = sortedKeys.map((key) => {
+    
     const node = createInitTree(key);
+    //console.log(node);
     checkDiffConditionFunc(obj1, obj2, node, key, isUnchanged);
-    // console.log(JSON.stringify(node, null, '  '));
+    
     return node;
   });
+  //console.log(`PACKTREE ${JSON.stringify(packTree, null, '  ')}`);
   return packTree;
 };
 
