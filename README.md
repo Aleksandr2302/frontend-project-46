@@ -15,5 +15,8 @@
 https://asciinema.org/a/31G2X3UTXpcVRn7oDjAmlWYn7
 
 
-#### An example of using our program to compare nested files in stylish format
+#### An example of using our program to compare nested files in STYLISH format
 https://asciinema.org/a/4PYcd2mlb6n2NVnP6nEt6qyU7
+
+#### An example of using our program to compare nested files in PLAIN format
+https://asciinema.org/a/07lnxhmMM0Islktvb8A9ldWeJ
