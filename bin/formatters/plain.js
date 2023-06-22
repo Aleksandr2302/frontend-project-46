@@ -13,7 +13,7 @@ const formatValue = (value) => {
   }
 };
 
-const processNodePlain = (innerTree) => {
+const plainFormat = (innerTree) => {
   // console.log(`innrerTree ${innerTree}`)
   const format = (nodes, parent) => nodes
     .filter((node) => node.type !== 'unchanged')
@@ -34,6 +34,5 @@ const processNodePlain = (innerTree) => {
     }).join('\n');
   return format(innerTree, 0);
 };
-const plainFormat = (tree) => processNodePlain(tree);
 
 export default plainFormat;

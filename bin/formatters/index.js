@@ -1,5 +1,6 @@
 import formatStylish from './stylish.js';
-import plainFormat from './plain.js';
+import formatPlain from './plain.js';
+import jsonFormat from './json.js';
 import { gendiffFunction } from '../../src/main.js';
 // import { error } from 'console';
 
@@ -11,7 +12,10 @@ const selectFormat = (format, filepath1, filepath2) => {
       return formatStylish(resultOfGendiffFunc);
 
     case 'plain':
-      return plainFormat(resultOfGendiffFunc);
+      return formatPlain(resultOfGendiffFunc);
+
+    case 'json':
+      return jsonFormat(resultOfGendiffFunc);
 
     default: throw new Error(`Unknown Format:${format}`);
   }

@@ -20,3 +20,6 @@ https://asciinema.org/a/4PYcd2mlb6n2NVnP6nEt6qyU7
 
 #### An example of using our program to compare nested files in PLAIN format
 https://asciinema.org/a/07lnxhmMM0Islktvb8A9ldWeJ
+
+#### An example of using our program to compare nested files in JSON format
+https://asciinema.org/a/77F0DUnU77oPnZY1hHjAeGzYX

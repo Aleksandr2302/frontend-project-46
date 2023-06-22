@@ -4,7 +4,9 @@ import path from 'path';
 import { fileURLToPath } from 'url';
 import formatStylish from '../bin/formatters/stylish.js';
 import formatPlain from '../bin/formatters/plain.js';
+import jsonFormat from '../bin/formatters/json.js';
 import { gendiffFunction } from '../src/main.js';
+import parseFile from '../bin/parsers.js';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -262,4 +264,397 @@ test('gendiffFunction  2 nested json in plain format', () => {
   Property 'group3' was added with value: [complex value]`;
 
   expect(formatPlain(resultOfGenDiffFunc)).toEqual(expectedObj);
+});
+
+// 4 Проверки в формате json
+
+// Проверка 2 плоских файла json в формате json
+test('gendiffFunction 2 flat json in json format', () => {
+  const file1 = 'file1';
+  const file2 = 'file2';
+
+  const getFixturePath1 = (fileFirst) => path.join(__dirname, '..', '__fixtures__', `${fileFirst}.json`);
+  const getFixturePath2 = (fileSecond) => path.join(__dirname, '..', '__fixtures__', `${fileSecond}.json`);
+
+  const resultOfGenDiffFunc = gendiffFunction(getFixturePath1(file1), getFixturePath2(file2));
+
+  // console.log(getFixturePath1(file1),getFixturePath2(file2))
+  const expectedObj = `[
+  {
+    "type": "deleted",
+    "key": "follow",
+    "value": false
+  },
+  {
+    "type": "unchanged",
+    "key": "host",
+    "value": "hexlet.io"
+  },
+  {
+    "type": "deleted",
+    "key": "proxy",
+    "value": "123.234.53.22"
+  },
+  {
+    "type": "updated",
+    "key": "timeout",
+    "value1": 50,
+    "value2": 20
+  },
+  {
+    "type": "added",
+    "key": "verbose",
+    "value": true
+  }
+]`;
+
+  // Проверяем результат gendiffFunction для плоских файлов
+  expect(jsonFormat(resultOfGenDiffFunc)).toEqual(expectedObj);
+});
+
+// Проверка 2 плоских файла json в формате json
+test('gendiffFunction 2 flat yml in json format', () => {
+  const file1 = 'file1';
+  const file2 = 'file2';
+
+  const getFixturePath1 = (fileFirst) => path.join(__dirname, '..', '__fixtures__', `${fileFirst}.yml`);
+  const getFixturePath2 = (fileSecond) => path.join(__dirname, '..', '__fixtures__', `${fileSecond}.yml`);
+
+  const resultOfGenDiffFunc = gendiffFunction(getFixturePath1(file1), getFixturePath2(file2));
+
+  // console.log(getFixturePath1(file1),getFixturePath2(file2))
+  const expectedObj = `[
+  {
+    "type": "deleted",
+    "key": "follow",
+    "value": false
+  },
+  {
+    "type": "unchanged",
+    "key": "host",
+    "value": "hexlet.io"
+  },
+  {
+    "type": "deleted",
+    "key": "proxy",
+    "value": "123.234.53.22"
+  },
+  {
+    "type": "updated",
+    "key": "timeout",
+    "value1": 50,
+    "value2": 20
+  },
+  {
+    "type": "added",
+    "key": "verbose",
+    "value": true
+  }
+]`;
+
+  // Проверяем результат gendiffFunction для плоских файлов
+  expect(jsonFormat(resultOfGenDiffFunc)).toEqual(expectedObj);
+});
+
+// Проверка 2 вложенных файла yaml в формате plain
+
+test('gendiffFunction  2 nested yml in json format', () => {
+  const file3 = 'file3';
+  const file4 = 'file4';
+
+  const getFixturePath1 = (fileFirst) => path.join(__dirname, '..', '__fixtures__', `${fileFirst}.yaml`);
+  const getFixturePath2 = (fileSecond) => path.join(__dirname, '..', '__fixtures__', `${fileSecond}.yaml`);
+
+  const resultOfGenDiffFunc = gendiffFunction(getFixturePath1(file3), getFixturePath2(file4));
+  // console.log(getFixturePath1(file1),getFixturePath2(file2))
+  const expectedObj = `[
+  {
+    "type": "recursion",
+    "key": "common",
+    "children": [
+      {
+        "type": "added",
+        "key": "follow",
+        "value": false
+      },
+      {
+        "type": "unchanged",
+        "key": "setting1",
+        "value": "Value 1"
+      },
+      {
+        "type": "deleted",
+        "key": "setting2",
+        "value": 200
+      },
+      {
+        "type": "updated",
+        "key": "setting3",
+        "value1": true,
+        "value2": null
+      },
+      {
+        "type": "added",
+        "key": "setting4",
+        "value": "blah blah"
+      },
+      {
+        "type": "added",
+        "key": "setting5",
+        "value": {
+          "key5": "value5"
+        }
+      },
+      {
+        "type": "recursion",
+        "key": "setting6",
+        "children": [
+          {
+            "type": "recursion",
+            "key": "doge",
+            "children": [
+              {
+                "type": "updated",
+                "key": "wow",
+                "value1": "",
+                "value2": "so much"
+              }
+            ]
+          },
+          {
+            "type": "unchanged",
+            "key": "key",
+            "value": "value"
+          },
+          {
+            "type": "added",
+            "key": "ops",
+            "value": "vops"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "type": "recursion",
+    "key": "group1",
+    "children": [
+      {
+        "type": "updated",
+        "key": "baz",
+        "value1": "bas",
+        "value2": "bars"
+      },
+      {
+        "type": "unchanged",
+        "key": "foo",
+        "value": "bar"
+      },
+      {
+        "type": "updated",
+        "key": "nest",
+        "value1": {
+          "key": "value"
+        },
+        "value2": "str"
+      }
+    ]
+  },
+  {
+    "type": "deleted",
+    "key": "group2",
+    "value": {
+      "abc": 12345,
+      "deep": {
+        "id": 45
+      }
+    }
+  },
+  {
+    "type": "added",
+    "key": "group3",
+    "value": {
+      "deep": {
+        "id": {
+          "number": 45
+        }
+      },
+      "fee": 100500
+    }
+  }
+]`;
+
+  expect(jsonFormat(resultOfGenDiffFunc)).toEqual(expectedObj);
+});
+
+// Проверка 2 вложенных файла json в формате plain
+test('gendiffFunction  2 nested json in json format', () => {
+  const file3 = 'file3';
+  const file4 = 'file4';
+
+  const getFixturePath1 = (fileFirst) => path.join(__dirname, '..', '__fixtures__', `${fileFirst}.json`);
+  const getFixturePath2 = (fileSecond) => path.join(__dirname, '..', '__fixtures__', `${fileSecond}.json`);
+
+  const resultOfGenDiffFunc = gendiffFunction(getFixturePath1(file3), getFixturePath2(file4));
+  // console.log(getFixturePath1(file1),getFixturePath2(file2))
+  const expectedObj = `[
+  {
+    "type": "recursion",
+    "key": "common",
+    "children": [
+      {
+        "type": "added",
+        "key": "follow",
+        "value": false
+      },
+      {
+        "type": "unchanged",
+        "key": "setting1",
+        "value": "Value 1"
+      },
+      {
+        "type": "deleted",
+        "key": "setting2",
+        "value": 200
+      },
+      {
+        "type": "updated",
+        "key": "setting3",
+        "value1": true,
+        "value2": null
+      },
+      {
+        "type": "added",
+        "key": "setting4",
+        "value": "blah blah"
+      },
+      {
+        "type": "added",
+        "key": "setting5",
+        "value": {
+          "key5": "value5"
+        }
+      },
+      {
+        "type": "recursion",
+        "key": "setting6",
+        "children": [
+          {
+            "type": "recursion",
+            "key": "doge",
+            "children": [
+              {
+                "type": "updated",
+                "key": "wow",
+                "value1": "",
+                "value2": "so much"
+              }
+            ]
+          },
+          {
+            "type": "unchanged",
+            "key": "key",
+            "value": "value"
+          },
+          {
+            "type": "added",
+            "key": "ops",
+            "value": "vops"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "type": "recursion",
+    "key": "group1",
+    "children": [
+      {
+        "type": "updated",
+        "key": "baz",
+        "value1": "bas",
+        "value2": "bars"
+      },
+      {
+        "type": "unchanged",
+        "key": "foo",
+        "value": "bar"
+      },
+      {
+        "type": "updated",
+        "key": "nest",
+        "value1": {
+          "key": "value"
+        },
+        "value2": "str"
+      }
+    ]
+  },
+  {
+    "type": "deleted",
+    "key": "group2",
+    "value": {
+      "abc": 12345,
+      "deep": {
+        "id": 45
+      }
+    }
+  },
+  {
+    "type": "added",
+    "key": "group3",
+    "value": {
+      "deep": {
+        "id": {
+          "number": 45
+        }
+      },
+      "fee": 100500
+    }
+  }
+]`;
+
+  expect(jsonFormat(resultOfGenDiffFunc)).toEqual(expectedObj);
+});
+
+// Проверка вывода ошибки formatPlain функции из модуля plain.js
+test('formatPlain function Error scenario from plain.js module', () => {
+  const data1 = [
+    {
+      type: "de",
+      key: "follow",
+      value: false
+    },
+    {
+      type: "unchanged",
+      key: "host",
+      value: "hexlet.io"
+    }
+  ];
+
+  expect(() => formatPlain(data1)).toThrow('This type does not exist: de');
+});
+
+// Проверка вывода ошибки stylishFormat функции из модуля stylish.js
+test('stylishFormat function Error scenario from stylish.js module', () => {
+  const data1 = [
+    {
+      type: "de",
+      key: "follow",
+      value: false
+    },
+    {
+      type: "unchanged",
+      key: "host",
+      value: "hexlet.io"
+    }
+  ];
+
+  expect(() => formatStylish(data1)).toThrow('This type does not exist: de');
+});
+
+// Проверка вывода ошибки parseFile функции из модуля parsers.js
+test('parseFile function Error scenario from parser.js module', () => {
+  const data = '\frontend-project-46\file.xxx';
+  expect(() => parseFile(data)).toThrow(`Unsupported file format: .xxx`);
 });

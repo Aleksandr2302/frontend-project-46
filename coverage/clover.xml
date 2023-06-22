@@ -1,37 +1,102 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<coverage generated="1685070824065" clover="3.2.0">
-  <project timestamp="1685070824066" name="All files">
-    <metrics statements="28" coveredstatements="28" conditionals="26" coveredconditionals="25" methods="3" coveredmethods="3" elements="57" coveredelements="56" complexity="0" loc="28" ncloc="28" packages="1" files="1" classes="1"/>
-    <file name="main.js" path="/home/aleksandr/2_Project/frontend-project-46/src/main.js">
-      <metrics statements="28" coveredstatements="28" conditionals="26" coveredconditionals="25" methods="3" coveredmethods="3"/>
-      <line num="7" count="1" type="stmt"/>
-      <line num="8" count="2" type="stmt"/>
-      <line num="9" count="2" type="stmt"/>
-      <line num="10" count="2" type="stmt"/>
-      <line num="11" count="10" type="stmt"/>
-      <line num="12" count="10" type="stmt"/>
-      <line num="13" count="10" type="stmt"/>
-      <line num="15" count="10" type="cond" truecount="4" falsecount="0"/>
-      <line num="16" count="2" type="stmt"/>
-      <line num="18" count="8" type="cond" truecount="5" falsecount="0"/>
-      <line num="19" count="3" type="stmt"/>
-      <line num="21" count="5" type="cond" truecount="5" falsecount="0"/>
-      <line num="22" count="3" type="stmt"/>
-      <line num="23" count="3" type="stmt"/>
-      <line num="25" count="2" type="cond" truecount="3" falsecount="1"/>
-      <line num="26" count="2" type="stmt"/>
-      <line num="29" count="2" type="stmt"/>
-      <line num="31" count="2" type="stmt"/>
-      <line num="34" count="1" type="stmt"/>
-      <line num="37" count="8" type="stmt"/>
-      <line num="39" count="2" type="cond" truecount="4" falsecount="0"/>
-      <line num="40" count="1" type="stmt"/>
-      <line num="41" count="1" type="stmt"/>
-      <line num="46" count="2" type="cond" truecount="4" falsecount="0"/>
-      <line num="47" count="1" type="stmt"/>
-      <line num="48" count="1" type="stmt"/>
-      <line num="51" count="2" type="stmt"/>
-      <line num="52" count="2" type="stmt"/>
-    </file>
+<coverage generated="1687452531654" clover="3.2.0">
+  <project timestamp="1687452531654" name="All files">
+    <metrics statements="69" coveredstatements="69" conditionals="35" coveredconditionals="35" methods="18" coveredmethods="18" elements="122" coveredelements="122" complexity="0" loc="69" ncloc="69" packages="3" files="6" classes="6"/>
+    <package name="bin">
+      <metrics statements="28" coveredstatements="28" conditionals="16" coveredconditionals="16" methods="4" coveredmethods="4"/>
+      <file name="buildTree.js" path="/home/aleksandr/2_Project/frontend-project-46/bin/buildTree.js">
+        <metrics statements="19" coveredstatements="19" conditionals="10" coveredconditionals="10" methods="3" coveredmethods="3"/>
+        <line num="3" count="1" type="stmt"/>
+        <line num="4" count="36" type="stmt"/>
+        <line num="5" count="36" type="stmt"/>
+        <line num="6" count="36" type="stmt"/>
+        <line num="7" count="36" type="stmt"/>
+        <line num="11" count="1" type="stmt"/>
+        <line num="13" count="36" type="stmt"/>
+        <line num="15" count="36" type="stmt"/>
+        <line num="17" count="138" type="stmt"/>
+        <line num="18" count="138" type="stmt"/>
+        <line num="19" count="138" type="cond" truecount="2" falsecount="0"/>
+        <line num="20" count="36" type="stmt"/>
+        <line num="22" count="102" type="cond" truecount="2" falsecount="0"/>
+        <line num="23" count="24" type="stmt"/>
+        <line num="25" count="78" type="cond" truecount="4" falsecount="0"/>
+        <line num="26" count="24" type="stmt"/>
+        <line num="28" count="54" type="cond" truecount="2" falsecount="0"/>
+        <line num="29" count="30" type="stmt"/>
+        <line num="33" count="24" type="stmt"/>
+      </file>
+      <file name="parsers.js" path="/home/aleksandr/2_Project/frontend-project-46/bin/parsers.js">
+        <metrics statements="9" coveredstatements="9" conditionals="6" coveredconditionals="6" methods="1" coveredmethods="1"/>
+        <line num="5" count="1" type="stmt"/>
+        <line num="6" count="25" type="stmt"/>
+        <line num="7" count="25" type="cond" truecount="2" falsecount="0"/>
+        <line num="8" count="12" type="stmt"/>
+        <line num="9" count="12" type="stmt"/>
+        <line num="10" count="13" type="cond" truecount="4" falsecount="0"/>
+        <line num="11" count="12" type="stmt"/>
+        <line num="12" count="12" type="stmt"/>
+        <line num="14" count="1" type="stmt"/>
+      </file>
+    </package>
+    <package name="bin.formatters">
+      <metrics statements="36" coveredstatements="36" conditionals="19" coveredconditionals="19" methods="13" coveredmethods="13"/>
+      <file name="json.js" path="/home/aleksandr/2_Project/frontend-project-46/bin/formatters/json.js">
+        <metrics statements="1" coveredstatements="1" conditionals="0" coveredconditionals="0" methods="1" coveredmethods="1"/>
+        <line num="1" count="4" type="stmt"/>
+      </file>
+      <file name="plain.js" path="/home/aleksandr/2_Project/frontend-project-46/bin/formatters/plain.js">
+        <metrics statements="17" coveredstatements="17" conditionals="11" coveredconditionals="11" methods="5" coveredmethods="5"/>
+        <line num="1" count="1" type="stmt"/>
+        <line num="2" count="32" type="cond" truecount="4" falsecount="0"/>
+        <line num="4" count="2" type="stmt"/>
+        <line num="7" count="6" type="stmt"/>
+        <line num="10" count="14" type="stmt"/>
+        <line num="12" count="10" type="stmt"/>
+        <line num="16" count="1" type="stmt"/>
+        <line num="18" count="13" type="stmt"/>
+        <line num="19" count="48" type="stmt"/>
+        <line num="21" count="39" type="cond" truecount="2" falsecount="0"/>
+        <line num="22" count="39" type="cond" truecount="5" falsecount="0"/>
+        <line num="24" count="12" type="stmt"/>
+        <line num="26" count="8" type="stmt"/>
+        <line num="28" count="10" type="stmt"/>
+        <line num="30" count="8" type="stmt"/>
+        <line num="32" count="1" type="stmt"/>
+        <line num="35" count="5" type="stmt"/>
+      </file>
+      <file name="stylish.js" path="/home/aleksandr/2_Project/frontend-project-46/bin/formatters/stylish.js">
+        <metrics statements="18" coveredstatements="18" conditionals="8" coveredconditionals="8" methods="7" coveredmethods="7"/>
+        <line num="3" count="96" type="stmt"/>
+        <line num="6" count="1" type="stmt"/>
+        <line num="7" count="66" type="cond" truecount="2" falsecount="0"/>
+        <line num="8" count="52" type="stmt"/>
+        <line num="10" count="14" type="stmt"/>
+        <line num="11" count="18" type="stmt"/>
+        <line num="12" count="14" type="stmt"/>
+        <line num="15" count="1" type="stmt"/>
+        <line num="16" count="13" type="stmt"/>
+        <line num="18" count="48" type="stmt"/>
+        <line num="19" count="47" type="cond" truecount="6" falsecount="0"/>
+        <line num="21" count="12" type="stmt"/>
+        <line num="23" count="8" type="stmt"/>
+        <line num="25" count="8" type="stmt"/>
+        <line num="27" count="10" type="stmt"/>
+        <line num="29" count="8" type="stmt"/>
+        <line num="31" count="1" type="stmt"/>
+        <line num="34" count="5" type="stmt"/>
+      </file>
+    </package>
+    <package name="src">
+      <metrics statements="5" coveredstatements="5" conditionals="0" coveredconditionals="0" methods="1" coveredmethods="1"/>
+      <file name="main.js" path="/home/aleksandr/2_Project/frontend-project-46/src/main.js">
+        <metrics statements="5" coveredstatements="5" conditionals="0" coveredconditionals="0" methods="1" coveredmethods="1"/>
+        <line num="6" count="1" type="stmt"/>
+        <line num="7" count="12" type="stmt"/>
+        <line num="8" count="12" type="stmt"/>
+        <line num="9" count="12" type="stmt"/>
+        <line num="11" count="12" type="stmt"/>
+      </file>
+    </package>
   </project>
 </coverage>
