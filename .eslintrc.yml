@@ -20,5 +20,5 @@ rules:
    no-useless-return: 0
    "eqeqeq": 0
    import/prefer-default-export: 0
-   "no-use-before-define": "off"
+   
    

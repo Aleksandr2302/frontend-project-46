@@ -2,7 +2,7 @@
   "name": "@hexlet/code",
   "version": "1.0.0",
   "description": "[![Actions Status](https://github.com/Aleksandr2302/frontend-project-46/workflows/hexlet-check/badge.svg)](https://github.com/Aleksandr2302/frontend-project-46/actions)",
-  "main": "package.json",
+  "main": "src/main.js",
   "scripts": {
     "test": "tests",
     "lint": "eslint .",
