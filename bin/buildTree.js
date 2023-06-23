@@ -27,11 +27,11 @@ const buildTree = (data1, data2) => {
     }
     if (!_.isEqual(value1, value2)) {
       return {
-        type: 'updated', key, value1, value2
+        type: 'updated', key, value1, value2,
       };
     }
     return { type: 'unchanged', key, value: value1 };
   });
 };
 
-export { buildTree };
+export default buildTree;

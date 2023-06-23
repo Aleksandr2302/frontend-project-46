@@ -18,4 +18,4 @@ const selectFormat = (format, resultOfBuildTree) => {
     default: throw new Error(`Unknown Format:${format}`);
   }
 };
-export { selectFormat };
+export default selectFormat;

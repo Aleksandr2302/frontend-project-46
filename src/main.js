@@ -1,6 +1,6 @@
 import parseFile from '../bin/parsers.js';
-import { buildTree } from '../bin/buildTree.js';
-import { selectFormat } from '../bin/formatters/index.js';
+import buildTree from '../bin/buildTree.js';
+import selectFormat from '../bin/formatters/index.js';
 
 // Основная функция
 const gendiffFunction = ((filepath1, filepath2, format = 'stylish') => {

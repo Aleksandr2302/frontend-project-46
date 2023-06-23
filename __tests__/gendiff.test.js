@@ -214,7 +214,7 @@ test('gendiffFunction  2 nested yml in plain format', () => {
   const getFixturePath1 = (fileFirst) => path.join(__dirname, '..', '__fixtures__', `${fileFirst}.yaml`);
   const getFixturePath2 = (fileSecond) => path.join(__dirname, '..', '__fixtures__', `${fileSecond}.yaml`);
 
-const expectedObj = `Property 'common.follow' was added with value: false
+  const expectedObj = `Property 'common.follow' was added with value: false
 Property 'common.setting2' was removed
 Property 'common.setting3' was updated. From true to null
 Property 'common.setting4' was added with value: 'blah blah'
@@ -611,15 +611,15 @@ test('gendiffFunction  2 nested json in json format', () => {
 test('formatPlain function Error scenario from plain.js module', () => {
   const data1 = [
     {
-      type: "de",
-      key: "follow",
-      value: false
+      type: 'de',
+      key: 'follow',
+      value: false,
     },
     {
-      type: "unchanged",
-      key: "host",
-      value: "hexlet.io"
-    }
+      type: 'unchanged',
+      key: 'host',
+      value: 'hexlet.io',
+    },
   ];
 
   expect(() => formatPlain(data1)).toThrow('This type does not exist: de');
@@ -629,15 +629,15 @@ test('formatPlain function Error scenario from plain.js module', () => {
 test('stylishFormat function Error scenario from stylish.js module', () => {
   const data1 = [
     {
-      type: "de",
-      key: "follow",
-      value: false
+      type: 'de',
+      key: 'follow',
+      value: false,
     },
     {
-      type: "unchanged",
-      key: "host",
-      value: "hexlet.io"
-    }
+      type: 'unchanged',
+      key: 'host',
+      value: 'hexlet.io',
+    },
   ];
 
   expect(() => formatStylish(data1)).toThrow('This type does not exist: de');
@@ -646,5 +646,5 @@ test('stylishFormat function Error scenario from stylish.js module', () => {
 // Проверка вывода ошибки parseFile функции из модуля parsers.js
 test('parseFile function Error scenario from parser.js module', () => {
   const data = '\frontend-project-46\file.xxx';
-  expect(() => parseFile(data)).toThrow(`Unsupported file format: .xxx`);
+  expect(() => parseFile(data)).toThrow('Unsupported file format: .xxx');
 });
