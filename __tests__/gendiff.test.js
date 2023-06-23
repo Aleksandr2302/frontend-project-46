@@ -1,11 +1,8 @@
-// import { dirname } from 'path';
-// import fs from 'fs';
 import path from 'path';
 import { fileURLToPath } from 'url';
 import formatStylish from '../bin/formatters/stylish.js';
 import formatPlain from '../bin/formatters/plain.js';
-import jsonFormat from '../bin/formatters/json.js';
-import { gendiffFunction } from '../src/main.js';
+import gendiffFunction from '../src/main.js';
 import parseFile from '../bin/parsers.js';
 
 const __filename = fileURLToPath(import.meta.url);
@@ -20,9 +17,6 @@ test('gendiffFunction 2 flat json in stylish format', () => {
   const getFixturePath1 = (fileFirst) => path.join(__dirname, '..', '__fixtures__', `${fileFirst}.json`);
   const getFixturePath2 = (fileSecond) => path.join(__dirname, '..', '__fixtures__', `${fileSecond}.json`);
 
-  const resultOfGenDiffFunc = gendiffFunction(getFixturePath1(file1), getFixturePath2(file2));
-
-  // console.log(getFixturePath1(file1),getFixturePath2(file2))
   const expectedObj = `{
   - follow: false
     host: hexlet.io
@@ -33,7 +27,7 @@ test('gendiffFunction 2 flat json in stylish format', () => {
 }`;
 
   // Проверяем результат gendiffFunction для плоских файлов
-  expect(formatStylish(resultOfGenDiffFunc)).toEqual(expectedObj);
+  expect(gendiffFunction(getFixturePath1(file1), getFixturePath2(file2))).toEqual(expectedObj);
 });
 
 // Проверка 2 плоских файла yaml в формате stylish
@@ -44,8 +38,6 @@ test('gendiffFunction 2 flat yml in stylish format', () => {
   const getFixturePath1 = (fileFirst) => path.join(__dirname, '..', '__fixtures__', `${fileFirst}.yml`);
   const getFixturePath2 = (fileSecond) => path.join(__dirname, '..', '__fixtures__', `${fileSecond}.yml`);
 
-  const resultOfGenDiffFunc = gendiffFunction(getFixturePath1(file1), getFixturePath2(file2));
-  // console.log(getFixturePath1(file1),getFixturePath2(file2))
   const expectedObj = `{
   - follow: false
     host: hexlet.io
@@ -55,7 +47,7 @@ test('gendiffFunction 2 flat yml in stylish format', () => {
   + verbose: true
 }`;
 
-  expect(formatStylish(resultOfGenDiffFunc)).toEqual(expectedObj);
+  expect(gendiffFunction(getFixturePath1(file1), getFixturePath2(file2))).toEqual(expectedObj);
 });
 
 // Проверка 2 вложенных файла json в формате stylish
@@ -66,8 +58,6 @@ test('gendiffFunction 2 nested json in stylish format', () => {
   const getFixturePath1 = (fileFirst) => path.join(__dirname, '..', '__fixtures__', `${fileFirst}.json`);
   const getFixturePath2 = (fileSecond) => path.join(__dirname, '..', '__fixtures__', `${fileSecond}.json`);
 
-  const resultOfGenDiffFunc = gendiffFunction(getFixturePath1(file3), getFixturePath2(file4));
-  // console.log(getFixturePath1(file1),getFixturePath2(file2))
   const expectedObj = `{
     common: {
       + follow: false
@@ -113,7 +103,7 @@ test('gendiffFunction 2 nested json in stylish format', () => {
     }
 }`;
 
-  expect(formatStylish(resultOfGenDiffFunc)).toEqual(expectedObj);
+  expect(gendiffFunction(getFixturePath1(file3), getFixturePath2(file4))).toEqual(expectedObj);
 });
 
 // Проверка 2 вложенных файла yaml в формате stylish
@@ -124,8 +114,6 @@ test('gendiffFunction  2 nested yml in stylish format', () => {
   const getFixturePath1 = (fileFirst) => path.join(__dirname, '..', '__fixtures__', `${fileFirst}.yaml`);
   const getFixturePath2 = (fileSecond) => path.join(__dirname, '..', '__fixtures__', `${fileSecond}.yaml`);
 
-  const resultOfGenDiffFunc = gendiffFunction(getFixturePath1(file3), getFixturePath2(file4));
-  // console.log(getFixturePath1(file1),getFixturePath2(file2))
   const expectedObj = `{
     common: {
       + follow: false
@@ -171,7 +159,7 @@ test('gendiffFunction  2 nested yml in stylish format', () => {
     }
 }`;
 
-  expect(formatStylish(resultOfGenDiffFunc)).toEqual(expectedObj);
+  expect(gendiffFunction(getFixturePath1(file3), getFixturePath2(file4))).toEqual(expectedObj);
 });
 
 // 4 Проверки в формате plain
@@ -183,16 +171,16 @@ test('gendiffFunction 2 flat json in plain format', () => {
   const getFixturePath1 = (fileFirst) => path.join(__dirname, '..', '__fixtures__', `${fileFirst}.json`);
   const getFixturePath2 = (fileSecond) => path.join(__dirname, '..', '__fixtures__', `${fileSecond}.json`);
 
-  const resultOfGenDiffFunc = gendiffFunction(getFixturePath1(file1), getFixturePath2(file2));
+  const format = 'plain';
 
-  // console.log(getFixturePath1(file1),getFixturePath2(file2))
   const expectedObj = `  Property 'follow' was removed
   Property 'proxy' was removed
   Property 'timeout' was updated. From 50 to 20
   Property 'verbose' was added with value: true`;
 
   // Проверяем результат gendiffFunction для плоских файлов
-  expect(formatPlain(resultOfGenDiffFunc)).toEqual(expectedObj);
+  expect(gendiffFunction(getFixturePath1(file1), getFixturePath2(file2), format))
+    .toEqual(expectedObj);
 });
 
 // Проверка 2 плоских файла yaml в формате plain
@@ -203,16 +191,16 @@ test('gendiffFunction 2 flat yml in plain format', () => {
   const getFixturePath1 = (fileFirst) => path.join(__dirname, '..', '__fixtures__', `${fileFirst}.yml`);
   const getFixturePath2 = (fileSecond) => path.join(__dirname, '..', '__fixtures__', `${fileSecond}.yml`);
 
-  const resultOfGenDiffFunc = gendiffFunction(getFixturePath1(file1), getFixturePath2(file2));
+  const format = 'plain';
 
-  // console.log(getFixturePath1(file1),getFixturePath2(file2))
   const expectedObj = `  Property 'follow' was removed
   Property 'proxy' was removed
   Property 'timeout' was updated. From 50 to 20
   Property 'verbose' was added with value: true`;
 
   // Проверяем результат gendiffFunction для плоских файлов
-  expect(formatPlain(resultOfGenDiffFunc)).toEqual(expectedObj);
+  expect(gendiffFunction(getFixturePath1(file1), getFixturePath2(file2), format))
+    .toEqual(expectedObj);
 });
 
 // Проверка 2 вложенных файла yaml в формате plain
@@ -221,11 +209,11 @@ test('gendiffFunction  2 nested yml in plain format', () => {
   const file3 = 'file3';
   const file4 = 'file4';
 
+  const format = 'plain';
+
   const getFixturePath1 = (fileFirst) => path.join(__dirname, '..', '__fixtures__', `${fileFirst}.yaml`);
   const getFixturePath2 = (fileSecond) => path.join(__dirname, '..', '__fixtures__', `${fileSecond}.yaml`);
 
-  const resultOfGenDiffFunc = gendiffFunction(getFixturePath1(file3), getFixturePath2(file4));
-  // console.log(getFixturePath1(file1),getFixturePath2(file2))
   const expectedObj = `  Property 'common.follow' was added with value: false
   Property 'common.setting2' was removed
   Property 'common.setting3' was updated. From true to null
@@ -238,7 +226,8 @@ test('gendiffFunction  2 nested yml in plain format', () => {
   Property 'group2' was removed
   Property 'group3' was added with value: [complex value]`;
 
-  expect(formatPlain(resultOfGenDiffFunc)).toEqual(expectedObj);
+  expect(gendiffFunction(getFixturePath1(file3), getFixturePath2(file4), format))
+    .toEqual(expectedObj);
 });
 
 // Проверка 2 вложенных файла json в формате plain
@@ -249,8 +238,8 @@ test('gendiffFunction  2 nested json in plain format', () => {
   const getFixturePath1 = (fileFirst) => path.join(__dirname, '..', '__fixtures__', `${fileFirst}.json`);
   const getFixturePath2 = (fileSecond) => path.join(__dirname, '..', '__fixtures__', `${fileSecond}.json`);
 
-  const resultOfGenDiffFunc = gendiffFunction(getFixturePath1(file3), getFixturePath2(file4));
-  // console.log(getFixturePath1(file1),getFixturePath2(file2))
+  const format = 'plain';
+
   const expectedObj = `  Property 'common.follow' was added with value: false
   Property 'common.setting2' was removed
   Property 'common.setting3' was updated. From true to null
@@ -263,7 +252,8 @@ test('gendiffFunction  2 nested json in plain format', () => {
   Property 'group2' was removed
   Property 'group3' was added with value: [complex value]`;
 
-  expect(formatPlain(resultOfGenDiffFunc)).toEqual(expectedObj);
+  expect(gendiffFunction(getFixturePath1(file3), getFixturePath2(file4), format))
+    .toEqual(expectedObj);
 });
 
 // 4 Проверки в формате json
@@ -276,9 +266,8 @@ test('gendiffFunction 2 flat json in json format', () => {
   const getFixturePath1 = (fileFirst) => path.join(__dirname, '..', '__fixtures__', `${fileFirst}.json`);
   const getFixturePath2 = (fileSecond) => path.join(__dirname, '..', '__fixtures__', `${fileSecond}.json`);
 
-  const resultOfGenDiffFunc = gendiffFunction(getFixturePath1(file1), getFixturePath2(file2));
+  const format = 'json';
 
-  // console.log(getFixturePath1(file1),getFixturePath2(file2))
   const expectedObj = `[
   {
     "type": "deleted",
@@ -309,7 +298,8 @@ test('gendiffFunction 2 flat json in json format', () => {
 ]`;
 
   // Проверяем результат gendiffFunction для плоских файлов
-  expect(jsonFormat(resultOfGenDiffFunc)).toEqual(expectedObj);
+  expect(gendiffFunction(getFixturePath1(file1), getFixturePath2(file2), format))
+    .toEqual(expectedObj);
 });
 
 // Проверка 2 плоских файла json в формате json
@@ -319,10 +309,8 @@ test('gendiffFunction 2 flat yml in json format', () => {
 
   const getFixturePath1 = (fileFirst) => path.join(__dirname, '..', '__fixtures__', `${fileFirst}.yml`);
   const getFixturePath2 = (fileSecond) => path.join(__dirname, '..', '__fixtures__', `${fileSecond}.yml`);
+  const format = 'json';
 
-  const resultOfGenDiffFunc = gendiffFunction(getFixturePath1(file1), getFixturePath2(file2));
-
-  // console.log(getFixturePath1(file1),getFixturePath2(file2))
   const expectedObj = `[
   {
     "type": "deleted",
@@ -353,7 +341,8 @@ test('gendiffFunction 2 flat yml in json format', () => {
 ]`;
 
   // Проверяем результат gendiffFunction для плоских файлов
-  expect(jsonFormat(resultOfGenDiffFunc)).toEqual(expectedObj);
+  expect(gendiffFunction(getFixturePath1(file1), getFixturePath2(file2), format))
+    .toEqual(expectedObj);
 });
 
 // Проверка 2 вложенных файла yaml в формате plain
@@ -362,11 +351,10 @@ test('gendiffFunction  2 nested yml in json format', () => {
   const file3 = 'file3';
   const file4 = 'file4';
 
+  const format = 'json';
   const getFixturePath1 = (fileFirst) => path.join(__dirname, '..', '__fixtures__', `${fileFirst}.yaml`);
   const getFixturePath2 = (fileSecond) => path.join(__dirname, '..', '__fixtures__', `${fileSecond}.yaml`);
 
-  const resultOfGenDiffFunc = gendiffFunction(getFixturePath1(file3), getFixturePath2(file4));
-  // console.log(getFixturePath1(file1),getFixturePath2(file2))
   const expectedObj = `[
   {
     "type": "recursion",
@@ -484,7 +472,8 @@ test('gendiffFunction  2 nested yml in json format', () => {
   }
 ]`;
 
-  expect(jsonFormat(resultOfGenDiffFunc)).toEqual(expectedObj);
+  expect(gendiffFunction(getFixturePath1(file3), getFixturePath2(file4), format))
+    .toEqual(expectedObj);
 });
 
 // Проверка 2 вложенных файла json в формате plain
@@ -495,8 +484,8 @@ test('gendiffFunction  2 nested json in json format', () => {
   const getFixturePath1 = (fileFirst) => path.join(__dirname, '..', '__fixtures__', `${fileFirst}.json`);
   const getFixturePath2 = (fileSecond) => path.join(__dirname, '..', '__fixtures__', `${fileSecond}.json`);
 
-  const resultOfGenDiffFunc = gendiffFunction(getFixturePath1(file3), getFixturePath2(file4));
-  // console.log(getFixturePath1(file1),getFixturePath2(file2))
+  const format = 'json';
+
   const expectedObj = `[
   {
     "type": "recursion",
@@ -614,7 +603,8 @@ test('gendiffFunction  2 nested json in json format', () => {
   }
 ]`;
 
-  expect(jsonFormat(resultOfGenDiffFunc)).toEqual(expectedObj);
+  expect(gendiffFunction(getFixturePath1(file3), getFixturePath2(file4), format))
+    .toEqual(expectedObj);
 });
 
 // Проверка вывода ошибки formatPlain функции из модуля plain.js
