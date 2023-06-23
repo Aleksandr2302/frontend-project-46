@@ -4,6 +4,7 @@ import formatStylish from '../bin/formatters/stylish.js';
 import formatPlain from '../bin/formatters/plain.js';
 import gendiffFunction from '../src/main.js';
 import parseFile from '../bin/parsers.js';
+import selectFormat from '../bin/formatters/index.js';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -641,6 +642,25 @@ test('stylishFormat function Error scenario from stylish.js module', () => {
   ];
 
   expect(() => formatStylish(data1)).toThrow('This type does not exist: de');
+});
+
+// Проверка вывода ошибки функции из модуля index.js
+test('selectFormat function Error scenario from index.js module', () => {
+  const format = 'xxx';
+  const data1 = [
+    {
+      type: 'de',
+      key: 'follow',
+      value: false,
+    },
+    {
+      type: 'unchanged',
+      key: 'host',
+      value: 'hexlet.io',
+    },
+  ];
+
+  expect(() => selectFormat(format, data1)).toThrow('Unknown Format:xxx');
 });
 
 // Проверка вывода ошибки parseFile функции из модуля parsers.js
