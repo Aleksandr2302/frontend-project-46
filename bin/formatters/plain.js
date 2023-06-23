@@ -21,11 +21,11 @@ const formatPlain = (innerTree) => {
       const property = parent ? `${parent}.${node.key}` : node.key;
       switch (node.type) {
         case 'added':
-          return `  Property '${property}' was added with value: ${formatValue(node.value)}`;
+          return `Property '${property}' was added with value: ${formatValue(node.value)}`;
         case 'deleted':
-          return `  Property '${property}' was removed`;
+          return `Property '${property}' was removed`;
         case 'updated':
-          return `  Property '${property}' was updated. From ${formatValue(node.value1)} to ${formatValue(node.value2)}`;
+          return `Property '${property}' was updated. From ${formatValue(node.value1)} to ${formatValue(node.value2)}`;
         case 'recursion':
           return `${format(node.children, property)}`;
         default:
